@@ -36,12 +36,15 @@ POST http://127.0.0.1:8000/predict_dense_layer/radiacao
     "distancia": 10,
     "dif_altura": 5
 }
-
+```
 
 ** Resposta
+```json
 {
     "radiacao": 1450.0
 }
+```
+
 
 
 # Notas
