@@ -4,8 +4,8 @@ from utils import model_dense_layer, preparar_dados, reverter_normalizacao, colu
 
 app = Flask(__name__)
 
-@app.route('/predict_dense_layer/<variable>', methods=['POST'])
-def predict(variable):
+@app.route('/predict_dense_layer', methods=['POST'])
+def predict():
     data = request.get_json()
     input_data = preparar_dados(data)
 
@@ -17,18 +17,25 @@ def predict(variable):
         'radiacao': 'camada_densa/model_radiacao.weights.h5'
     }
 
-    if variable not in model_paths:
-        return jsonify({'error': 'Invalid variable'}), 400
+    predictions = {}
 
-    model = model_dense_layer(model_paths[variable])
-    prediction = model.predict(input_data)
-    prediction_value = prediction[0][0]
+    for variable, model_path in model_paths.items():
+        model = model_dense_layer(model_path)
+        prediction = model.predict(input_data)
+        prediction_value = prediction[0][0]
 
-    # Obter o índice da variável na lista columns_to_scale
-    column_index = columns_to_scale.index(variable)
-    original_value = reverter_normalizacao(prediction_value, column_index)
+        # Obter o índice da variável na lista columns_to_scale
+        column_index = columns_to_scale.index(variable)
+        original_value = reverter_normalizacao(prediction_value, column_index)
 
-    return jsonify({'prediction': float(original_value)})
+        predictions[variable] = float(original_value)
+
+    response = {
+        "rl": predictions,  
+        "cd": predictions
+    }
+
+    return jsonify(response)
 
 if __name__ == '__main__':
     app.run(debug=True, port=8000)
