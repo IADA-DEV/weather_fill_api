@@ -4,8 +4,8 @@ blinker==1.8.2
 certifi==2024.7.4
 charset-normalizer==3.3.2
 click==8.1.7
-cloudpickle==3.0.0
-dask==2024.7.0
+cloudpickle==2.2.0
+dask==2023.8.0
 Flask==3.0.3
 Flask-Cors==4.0.1
 flatbuffers==24.3.25
