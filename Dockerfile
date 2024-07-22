@@ -18,4 +18,5 @@ ENV FLASK_ENV=production
 EXPOSE 8000
 
 # Comando para rodar a aplicação
-CMD ["python", "app.py"]
+CMD ["gunicorn", "-b", "0.0.0.0:8000", "app:app"]
+
